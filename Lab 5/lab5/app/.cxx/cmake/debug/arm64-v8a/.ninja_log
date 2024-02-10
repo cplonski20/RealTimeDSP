@@ -1,0 +1,48 @@
+# ninja log v5
+19	197	698987940	CMakeFiles/echo.dir/kiss_fft/kiss_fft.c.o	729db9ad5e20196
+24	504	698987941	CMakeFiles/echo.dir/ece420_lib.cpp.o	783030b0042fb4bf
+1	623	698987941	CMakeFiles/echo.dir/audio_common.cpp.o	34e17614061e6c9c
+5	681	698987941	CMakeFiles/echo.dir/audio_player.cpp.o	25f7a57bcba96522
+14	720	698987941	CMakeFiles/echo.dir/debug_utils.cpp.o	275cddece49eab3c
+30	758	698987941	CMakeFiles/echo.dir/audio_recorder.cpp.o	2af63ba912dc5af1
+10	764	698987941	CMakeFiles/echo.dir/audio_main.cpp.o	c8ad3675bcd2d806
+35	829	698987941	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+829	1012	698987941	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	465	698988045	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+466	592	698988045	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	539	698988210	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+539	674	698988210	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	454	698988662	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+454	583	698988663	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	486	698988730	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+487	610	698988730	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+2	470	698988855	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+470	630	698988855	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+2	471	698989047	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+472	609	698989047	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+5	611	698989203	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+611	742	698989203	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	458	698989300	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+459	614	698989300	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+4	495	698989426	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+496	625	698989427	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	1023	698989615	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+1024	1244	698989615	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	461	698989653	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+461	586	698989653	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+2	519	698989841	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+520	646	698989841	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	474	698989874	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+474	628	698989874	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	488	698989934	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+488	622	698989934	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+2	482	698989943	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+482	622	698989943	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+2	451	698990175	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+452	578	698990176	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	478	698990292	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+478	607	698990292	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+3	488	698990353	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+489	620	698990353	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b
+2	499	698990467	CMakeFiles/echo.dir/ece420_main.cpp.o	95674eac30ce6f21
+500	630	698990467	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 5/lab5/app/build/intermediates/cmake/debug/obj/arm64-v8a/libecho.so	4fd9f97ca814a70b

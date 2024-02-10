@@ -1,0 +1,34 @@
+# ninja log v5
+39	468	697357098	CMakeFiles/echo.dir/kiss_fft/kiss_fft.c.o	5ce3871aec7f3c33
+25	734	697357098	CMakeFiles/echo.dir/ece420_lib.cpp.o	f74a57dfdd8ffcb
+1	813	697357098	CMakeFiles/echo.dir/audio_common.cpp.o	7770fb49da15fc31
+7	954	697357098	CMakeFiles/echo.dir/audio_player.cpp.o	4a22e44977f357d9
+19	971	697357098	CMakeFiles/echo.dir/audio_recorder.cpp.o	c7bdc375260f9d79
+31	989	697357098	CMakeFiles/echo.dir/debug_utils.cpp.o	cdb559edd34da728
+14	1010	697357099	CMakeFiles/echo.dir/audio_main.cpp.o	3944ae1a840988d0
+3	450	697357207	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+451	596	697357207	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+4	406	697357640	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+4	138	697357688	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+4	471	697360437	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+471	609	697360437	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+3	407	697361971	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+407	516	697361971	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+2	406	697362169	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+407	515	697362169	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+2	422	697362295	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+422	550	697362295	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+2	393	697362348	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+394	497	697362348	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+3	397	697363143	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+398	530	697363143	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+3	358	697363660	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+358	457	697363660	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+2	362	697363964	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+362	464	697363964	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+5	410	697364214	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+411	536	697364215	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+3	394	697364250	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+394	504	697364250	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c
+5	812	697409777	CMakeFiles/echo.dir/ece420_main.cpp.o	f35963a28c48b134
+812	1141	697409777	C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libecho.so	79c17a31d6f85b3c

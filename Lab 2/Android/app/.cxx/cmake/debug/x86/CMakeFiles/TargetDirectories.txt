@@ -1,0 +1,3 @@
+C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/.cxx/cmake/debug/x86/CMakeFiles/echo.dir
+C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
+C:/Users/chazp/OneDrive/Documents/ECE 420/Lab 2/Android/app/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir

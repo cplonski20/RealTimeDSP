@@ -1,0 +1,294 @@
+<html>
+<head>
+<title>ece420_main.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #bbb529;}
+.s3 { color: #6a8759;}
+.s4 { color: #cc7832;}
+.s5 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ece420_main.cpp</font>
+</center></td></tr></table>
+<pre><span class="s0">//</span>
+<span class="s0">// Created by daran on 1/12/2017 to be used in ECE420 Sp17 for the first time.</span>
+<span class="s0">// Modified by dwang49 on 1/1/2018 to adapt to Android 7.0 and Shield Tablet updates.</span>
+<span class="s0">//</span>
+
+<span class="s2">#include </span><span class="s3">&lt;jni.h&gt;</span>
+<span class="s2">#include </span><span class="s3">&quot;ece420_main.h&quot;</span>
+<span class="s2">#include </span><span class="s3">&quot;ece420_lib.h&quot;</span>
+<span class="s2">#include </span><span class="s3">&quot;kiss_fft/kiss_fft.h&quot;</span>
+
+<span class="s0">// JNI Function</span>
+<span class="s4">extern </span><span class="s3">&quot;C&quot; </span><span class="s1">{</span>
+<span class="s1">JNIEXPORT </span><span class="s4">void </span><span class="s1">JNICALL</span>
+<span class="s1">Java_com_ece420_lab5_MainActivity_writeNewFreq(JNIEnv *env</span><span class="s4">, </span><span class="s1">jclass</span><span class="s4">, </span><span class="s1">jint)</span><span class="s4">;</span>
+<span class="s1">}</span>
+
+<span class="s0">// Student Variables</span>
+<span class="s2">#define </span><span class="s1">EPOCH_PEAK_REGION_WIGGLE </span><span class="s5">30</span>
+<span class="s2">#define </span><span class="s1">VOICED_THRESHOLD </span><span class="s5">200000000</span>
+<span class="s2">#define </span><span class="s1">FRAME_SIZE </span><span class="s5">1024</span>
+<span class="s2">#define </span><span class="s1">BUFFER_SIZE (</span><span class="s5">3 </span><span class="s1">* FRAME_SIZE)</span>
+<span class="s2">#define </span><span class="s1">F_S </span><span class="s5">48000</span>
+<span class="s4">float </span><span class="s1">bufferIn[BUFFER_SIZE] = {}</span><span class="s4">;</span>
+<span class="s4">float </span><span class="s1">bufferOut[BUFFER_SIZE] = {}</span><span class="s4">;</span>
+<span class="s4">int </span><span class="s1">newEpochIdx = FRAME_SIZE</span><span class="s4">;</span>
+
+<span class="s0">// We have two variables here to ensure that we never change the desired frequency while</span>
+<span class="s0">// processing a frame. Thread synchronization, etc. Setting to 300 is only an initializer.</span>
+<span class="s4">int </span><span class="s1">FREQ_NEW_ANDROID = </span><span class="s5">300</span><span class="s4">;</span>
+<span class="s4">int </span><span class="s1">FREQ_NEW = </span><span class="s5">300</span><span class="s4">;</span>
+
+<span class="s4">bool </span><span class="s1">lab5PitchShift(</span><span class="s4">float </span><span class="s1">*bufferIn) {</span>
+    <span class="s0">// Lab 4 code is condensed into this function</span>
+    <span class="s4">int </span><span class="s1">periodLen = detectBufferPeriod(bufferIn)</span><span class="s4">;</span>
+    <span class="s4">float </span><span class="s1">freq = ((</span><span class="s4">float</span><span class="s1">) F_S) / periodLen</span><span class="s4">;</span>
+
+    <span class="s0">// If voiced</span>
+    <span class="s4">if </span><span class="s1">(periodLen &gt; </span><span class="s5">0</span><span class="s1">) {</span>
+
+        <span class="s1">LOGD(</span><span class="s3">&quot;Frequency detected: %f</span><span class="s4">\r\n</span><span class="s3">&quot;</span><span class="s4">, </span><span class="s1">freq)</span><span class="s4">;</span>
+
+        <span class="s0">// Epoch detection - this code is written for you, but the principles will be quizzed</span>
+        <span class="s1">std::vector&lt;</span><span class="s4">int</span><span class="s1">&gt; epochLocations</span><span class="s4">;</span>
+        <span class="s1">findEpochLocations(epochLocations</span><span class="s4">, </span><span class="s1">bufferIn</span><span class="s4">, </span><span class="s1">periodLen)</span><span class="s4">;</span>
+
+        <span class="s0">// In this section, you will implement the algorithm given in:</span>
+        <span class="s0">// https://courses.engr.illinois.edu/ece420/lab5/lab/#buffer-manipulation-algorithm</span>
+        <span class="s0">//</span>
+        <span class="s0">// Don't forget about the following functions! API given on the course page.</span>
+        <span class="s0">//</span>
+        <span class="s0">// getHanningCoef();</span>
+        <span class="s0">// findClosestInVector();</span>
+        <span class="s0">// overlapAndAdd();</span>
+        <span class="s0">// *********************** START YOUR CODE HERE  **************************** //</span>
+
+
+
+
+        <span class="s4">int </span><span class="s1">newSpacing = F_S / FREQ_NEW</span><span class="s4">; </span><span class="s0">// may not work for all F_NEW</span>
+
+        <span class="s4">while</span><span class="s1">(newEpochIdx &lt; </span><span class="s5">2 </span><span class="s1">*FRAME_SIZE){</span>
+
+            <span class="s4">int </span><span class="s1">currmappedIdx = findClosestInVector(epochLocations</span><span class="s4">, </span><span class="s1">newEpochIdx</span><span class="s4">, </span><span class="s5">1</span><span class="s4">, </span><span class="s1">epochLocations.size()-</span><span class="s5">1</span><span class="s1">)</span><span class="s4">;</span>
+
+            <span class="s4">int </span><span class="s1">currmapped = epochLocations[currmappedIdx]</span><span class="s4">;</span>
+
+            <span class="s4">int </span><span class="s1">P = (epochLocations[currmappedIdx+</span><span class="s5">1</span><span class="s1">]-epochLocations[currmappedIdx-</span><span class="s5">1</span><span class="s1">])/</span><span class="s5">2</span><span class="s4">;</span>
+
+            <span class="s4">for</span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = (currmapped - P)</span><span class="s4">; </span><span class="s1">i &lt; (currmapped + P + </span><span class="s5">1</span><span class="s1">)</span><span class="s4">; </span><span class="s1">i++)</span>
+            <span class="s1">{</span>
+                <span class="s4">int </span><span class="s1">a = i - (currmapped - P)</span><span class="s4">;</span>
+                <span class="s1">bufferOut[newEpochIdx - P + a] += getHanningCoef(</span><span class="s5">2</span><span class="s1">*P + </span><span class="s5">1</span><span class="s4">,</span><span class="s1">a) * bufferIn[i]</span><span class="s4">;</span>
+            <span class="s1">}</span>
+            <span class="s1">newEpochIdx += newSpacing</span><span class="s4">;</span>
+        <span class="s1">}</span>
+
+
+
+        <span class="s0">// ************************ END YOUR CODE HERE  ***************************** //</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// Final bookkeeping, move your new pointer back, because you'll be</span>
+    <span class="s0">// shifting everything back now in your circular buffer</span>
+    <span class="s1">newEpochIdx -= FRAME_SIZE</span><span class="s4">;</span>
+    <span class="s4">if </span><span class="s1">(newEpochIdx &lt; FRAME_SIZE) {</span>
+        <span class="s1">newEpochIdx = FRAME_SIZE</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s4">return </span><span class="s1">(periodLen &gt; </span><span class="s5">0</span><span class="s1">)</span><span class="s4">;</span>
+<span class="s1">}</span>
+
+<span class="s4">void </span><span class="s1">ece420ProcessFrame(sample_buf *dataBuf) {</span>
+    <span class="s0">// Keep in mind, we only have 20ms to process each buffer!</span>
+    <span class="s4">struct </span><span class="s1">timeval start</span><span class="s4">;</span>
+    <span class="s4">struct </span><span class="s1">timeval end</span><span class="s4">;</span>
+    <span class="s1">gettimeofday(&amp;start</span><span class="s4">, </span><span class="s1">NULL)</span><span class="s4">;</span>
+
+    <span class="s0">// Get the new desired frequency from android</span>
+    <span class="s1">FREQ_NEW = FREQ_NEW_ANDROID</span><span class="s4">;</span>
+
+    <span class="s0">// Data is encoded in signed PCM-16, little-endian, mono</span>
+    <span class="s1">int16_t data[FRAME_SIZE]</span><span class="s4">;</span>
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; FRAME_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">data[i] = ((uint16_t) dataBuf-&gt;buf_[</span><span class="s5">2 </span><span class="s1">* i]) | (((uint16_t) dataBuf-&gt;buf_[</span><span class="s5">2 </span><span class="s1">* i + </span><span class="s5">1</span><span class="s1">]) &lt;&lt; </span><span class="s5">8</span><span class="s1">)</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// Shift our old data back to make room for the new data</span>
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; </span><span class="s5">2 </span><span class="s1">* FRAME_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">bufferIn[i] = bufferIn[i + FRAME_SIZE - </span><span class="s5">1</span><span class="s1">]</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// Finally, put in our new data.</span>
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; FRAME_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">bufferIn[i + </span><span class="s5">2 </span><span class="s1">* FRAME_SIZE - </span><span class="s5">1</span><span class="s1">] = (</span><span class="s4">float</span><span class="s1">) data[i]</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// The whole kit and kaboodle -- pitch shift</span>
+    <span class="s4">bool </span><span class="s1">isVoiced = lab5PitchShift(bufferIn)</span><span class="s4">;</span>
+
+    <span class="s4">if </span><span class="s1">(isVoiced) {</span>
+        <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; FRAME_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+            <span class="s1">int16_t newVal = (int16_t) bufferOut[i]</span><span class="s4">;</span>
+
+            <span class="s1">uint8_t lowByte = (uint8_t) (</span><span class="s5">0x00ff </span><span class="s1">&amp; newVal)</span><span class="s4">;</span>
+            <span class="s1">uint8_t highByte = (uint8_t) ((</span><span class="s5">0xff00 </span><span class="s1">&amp; newVal) &gt;&gt; </span><span class="s5">8</span><span class="s1">)</span><span class="s4">;</span>
+            <span class="s1">dataBuf-&gt;buf_[i * </span><span class="s5">2</span><span class="s1">] = lowByte</span><span class="s4">;</span>
+            <span class="s1">dataBuf-&gt;buf_[i * </span><span class="s5">2 </span><span class="s1">+ </span><span class="s5">1</span><span class="s1">] = highByte</span><span class="s4">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// Very last thing, update your output circular buffer!</span>
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; </span><span class="s5">2 </span><span class="s1">* FRAME_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">bufferOut[i] = bufferOut[i + FRAME_SIZE - </span><span class="s5">1</span><span class="s1">]</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; FRAME_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">bufferOut[i + </span><span class="s5">2 </span><span class="s1">* FRAME_SIZE - </span><span class="s5">1</span><span class="s1">] = </span><span class="s5">0</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">gettimeofday(&amp;end</span><span class="s4">, </span><span class="s1">NULL)</span><span class="s4">;</span>
+    <span class="s1">LOGD(</span><span class="s3">&quot;Time delay: %ld us&quot;</span><span class="s4">,  </span><span class="s1">((end.tv_sec * </span><span class="s5">1000000 </span><span class="s1">+ end.tv_usec) - (start.tv_sec * </span><span class="s5">1000000 </span><span class="s1">+ start.tv_usec)))</span><span class="s4">;</span>
+<span class="s1">}</span>
+
+<span class="s0">// Returns lag l that maximizes sum(x[n] x[n-k])</span>
+<span class="s4">int </span><span class="s1">detectBufferPeriod(</span><span class="s4">float </span><span class="s1">*buffer) {</span>
+
+    <span class="s4">float </span><span class="s1">totalPower = </span><span class="s5">0</span><span class="s4">;</span>
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; BUFFER_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">totalPower += buffer[i] * buffer[i]</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s4">if </span><span class="s1">(totalPower &lt; VOICED_THRESHOLD) {</span>
+        <span class="s4">return </span><span class="s1">-</span><span class="s5">1</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// FFT is done using Kiss FFT engine. Remember to free(cfg) on completion</span>
+    <span class="s1">kiss_fft_cfg cfg = kiss_fft_alloc(BUFFER_SIZE</span><span class="s4">, false, </span><span class="s5">0</span><span class="s4">, </span><span class="s5">0</span><span class="s1">)</span><span class="s4">;</span>
+
+    <span class="s1">kiss_fft_cpx buffer_in[BUFFER_SIZE]</span><span class="s4">;</span>
+    <span class="s1">kiss_fft_cpx buffer_fft[BUFFER_SIZE]</span><span class="s4">;</span>
+
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; BUFFER_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">buffer_in[i].r = bufferIn[i]</span><span class="s4">;</span>
+        <span class="s1">buffer_in[i].i = </span><span class="s5">0</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">kiss_fft(cfg</span><span class="s4">, </span><span class="s1">buffer_in</span><span class="s4">, </span><span class="s1">buffer_fft)</span><span class="s4">;</span>
+    <span class="s1">free(cfg)</span><span class="s4">;</span>
+
+
+    <span class="s0">// Autocorrelation is given by:</span>
+    <span class="s0">// autoc = ifft(fft(x) * conj(fft(x))</span>
+    <span class="s0">//</span>
+    <span class="s0">// Also, (a + jb) (a - jb) = a^2 + b^2</span>
+    <span class="s1">kiss_fft_cfg cfg_ifft = kiss_fft_alloc(BUFFER_SIZE</span><span class="s4">, true, </span><span class="s5">0</span><span class="s4">, </span><span class="s5">0</span><span class="s1">)</span><span class="s4">;</span>
+
+    <span class="s1">kiss_fft_cpx multiplied_fft[BUFFER_SIZE]</span><span class="s4">;</span>
+    <span class="s1">kiss_fft_cpx autoc_kiss[BUFFER_SIZE]</span><span class="s4">;</span>
+
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; BUFFER_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">multiplied_fft[i].r = (buffer_fft[i].r * buffer_fft[i].r)</span>
+                              <span class="s1">+ (buffer_fft[i].i * buffer_fft[i].i)</span><span class="s4">;</span>
+        <span class="s1">multiplied_fft[i].i = </span><span class="s5">0</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">kiss_fft(cfg_ifft</span><span class="s4">, </span><span class="s1">multiplied_fft</span><span class="s4">, </span><span class="s1">autoc_kiss)</span><span class="s4">;</span>
+    <span class="s1">free(cfg_ifft)</span><span class="s4">;</span>
+
+    <span class="s0">// Move to a normal float array rather than a struct array of r/i components</span>
+    <span class="s4">float </span><span class="s1">autoc[BUFFER_SIZE]</span><span class="s4">;</span>
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s4">; </span><span class="s1">i &lt; BUFFER_SIZE</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">autoc[i] = autoc_kiss[i].r</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// We're only interested in pitches below 1000Hz.</span>
+    <span class="s0">// Why does this line guarantee we only identify pitches below 1000Hz?</span>
+    <span class="s4">int </span><span class="s1">minIdx = F_S / </span><span class="s5">1000</span><span class="s4">;</span>
+    <span class="s4">int </span><span class="s1">maxIdx = BUFFER_SIZE / </span><span class="s5">2</span><span class="s4">;</span>
+
+    <span class="s4">int </span><span class="s1">periodLen = findMaxArrayIdx(autoc</span><span class="s4">, </span><span class="s1">minIdx</span><span class="s4">, </span><span class="s1">maxIdx)</span><span class="s4">;</span>
+    <span class="s4">float </span><span class="s1">freq = ((</span><span class="s4">float</span><span class="s1">) F_S) / periodLen</span><span class="s4">;</span>
+
+    <span class="s0">// TODO: tune</span>
+    <span class="s4">if </span><span class="s1">(freq &lt; </span><span class="s5">50</span><span class="s1">) {</span>
+        <span class="s1">periodLen = -</span><span class="s5">1</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s4">return </span><span class="s1">periodLen</span><span class="s4">;</span>
+<span class="s1">}</span>
+
+
+<span class="s4">void </span><span class="s1">findEpochLocations(std::vector&lt;</span><span class="s4">int</span><span class="s1">&gt; &amp;epochLocations</span><span class="s4">, float </span><span class="s1">*buffer</span><span class="s4">, int </span><span class="s1">periodLen) {</span>
+    <span class="s0">// This algorithm requires that the epoch locations be pretty well marked</span>
+
+    <span class="s4">int </span><span class="s1">largestPeak = findMaxArrayIdx(bufferIn</span><span class="s4">, </span><span class="s5">0</span><span class="s4">, </span><span class="s1">BUFFER_SIZE)</span><span class="s4">;</span>
+    <span class="s1">epochLocations.push_back(largestPeak)</span><span class="s4">;</span>
+
+    <span class="s0">// First go right</span>
+    <span class="s4">int </span><span class="s1">epochCandidateIdx = epochLocations[</span><span class="s5">0</span><span class="s1">] + periodLen</span><span class="s4">;</span>
+    <span class="s4">while </span><span class="s1">(epochCandidateIdx &lt; BUFFER_SIZE) {</span>
+        <span class="s1">epochLocations.push_back(epochCandidateIdx)</span><span class="s4">;</span>
+        <span class="s1">epochCandidateIdx += periodLen</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// Then go left</span>
+    <span class="s1">epochCandidateIdx = epochLocations[</span><span class="s5">0</span><span class="s1">] - periodLen</span><span class="s4">;</span>
+    <span class="s4">while </span><span class="s1">(epochCandidateIdx &gt; </span><span class="s5">0</span><span class="s1">) {</span>
+        <span class="s1">epochLocations.push_back(epochCandidateIdx)</span><span class="s4">;</span>
+        <span class="s1">epochCandidateIdx -= periodLen</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// Sort in place so that we can more easily find the period,</span>
+    <span class="s0">// where period = (epochLocations[t+1] + epochLocations[t-1]) / 2</span>
+    <span class="s1">std::sort(epochLocations.begin()</span><span class="s4">, </span><span class="s1">epochLocations.end())</span><span class="s4">;</span>
+
+    <span class="s0">// Finally, just to make sure we have our epochs in the right</span>
+    <span class="s0">// place, ensure that every epoch mark (sans first/last) sits on a peak</span>
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = </span><span class="s5">1</span><span class="s4">; </span><span class="s1">i &lt; epochLocations.size() - </span><span class="s5">1</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s4">int </span><span class="s1">minIdx = epochLocations[i] - EPOCH_PEAK_REGION_WIGGLE</span><span class="s4">;</span>
+        <span class="s4">int </span><span class="s1">maxIdx = epochLocations[i] + EPOCH_PEAK_REGION_WIGGLE</span><span class="s4">;</span>
+
+        <span class="s4">int </span><span class="s1">peakOffset = findMaxArrayIdx(bufferIn</span><span class="s4">, </span><span class="s1">minIdx</span><span class="s4">, </span><span class="s1">maxIdx) - minIdx</span><span class="s4">;</span>
+        <span class="s1">peakOffset -= EPOCH_PEAK_REGION_WIGGLE</span><span class="s4">;</span>
+
+        <span class="s1">epochLocations[i] += peakOffset</span><span class="s4">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s4">void </span><span class="s1">overlapAddArray(</span><span class="s4">float </span><span class="s1">*dest</span><span class="s4">, float </span><span class="s1">*src</span><span class="s4">, int </span><span class="s1">startIdx</span><span class="s4">, int </span><span class="s1">len) {</span>
+    <span class="s4">int </span><span class="s1">idxLow = startIdx</span><span class="s4">;</span>
+    <span class="s4">int </span><span class="s1">idxHigh = startIdx + len</span><span class="s4">;</span>
+
+    <span class="s4">int </span><span class="s1">padLow = </span><span class="s5">0</span><span class="s4">;</span>
+    <span class="s4">int </span><span class="s1">padHigh = </span><span class="s5">0</span><span class="s4">;</span>
+    <span class="s4">if </span><span class="s1">(idxLow &lt; </span><span class="s5">0</span><span class="s1">) {</span>
+        <span class="s1">padLow = -idxLow</span><span class="s4">;</span>
+    <span class="s1">}</span>
+    <span class="s4">if </span><span class="s1">(idxHigh &gt; BUFFER_SIZE) {</span>
+        <span class="s1">padHigh = BUFFER_SIZE - idxHigh</span><span class="s4">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">// Finally, reconstruct the buffer</span>
+    <span class="s4">for </span><span class="s1">(</span><span class="s4">int </span><span class="s1">i = padLow</span><span class="s4">; </span><span class="s1">i &lt; len + padHigh</span><span class="s4">; </span><span class="s1">i++) {</span>
+        <span class="s1">dest[startIdx + i] += src[i]</span><span class="s4">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+
+<span class="s1">JNIEXPORT </span><span class="s4">void </span><span class="s1">JNICALL</span>
+<span class="s1">Java_com_ece420_lab5_MainActivity_writeNewFreq(JNIEnv *env</span><span class="s4">, </span><span class="s1">jclass</span><span class="s4">, </span><span class="s1">jint newFreq) {</span>
+    <span class="s1">FREQ_NEW_ANDROID = (</span><span class="s4">int</span><span class="s1">) newFreq</span><span class="s4">;</span>
+    <span class="s4">return;</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

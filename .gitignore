@@ -1,3 +1,4 @@
-*/FinalProject_Android/*
-*/*.jpg
-*/*.jpegg
+FinalProject_Android/*
+*.jpg
+*.jpeg
+*.csv
